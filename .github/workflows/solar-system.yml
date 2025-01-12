@@ -58,7 +58,7 @@ jobs:
             password: ${{secrets.GITHUB_TOKEN}}
 
         - name: lowercase username
-          run: echo "USERNAME=${github.repository_owner,,}" >>${GITHUB_ENV}
+          run: echo "USERNAME=${{github.repository_owner}}" >>${GITHUB_ENV}
         
         - name: Container push
           uses: docker/build-push-action@v4
