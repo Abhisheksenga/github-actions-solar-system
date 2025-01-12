@@ -56,14 +56,11 @@ jobs:
             registry: ghcr.io
             username: ${{github.repository_owner}}
             password: ${{secrets.GITHUB_TOKEN}}
-
-        - name: lowercase username
-          run: echo "USERNAME=${{github.repository_owner}}" >>${GITHUB_ENV}
         
         - name: Container push
           uses: docker/build-push-action@v4
           with:
             context: .
             push: true
-            tags: ghcr.io/${{ env.USERNAME }}/solar-system:${{ github.sha }}
+            tags: ghcr.io/abhisheksenga/solar-system:${{ github.sha }}
 
