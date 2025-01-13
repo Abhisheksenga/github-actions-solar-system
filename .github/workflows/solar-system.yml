@@ -1,4 +1,4 @@
-name: Solar System Workflow with Service containers
+name: Solar System Workflow with Job/Service containers
 
 on: 
   workflow_dispatch:
@@ -14,26 +14,25 @@ jobs:
     unit-testing:
         name: Unit Testing
         runs-on: ubuntu-latest
+        container: 
+          image: node:20
         services:
           mongo-db:
             image: mongo
-            ports:
-              - 27017:27017
-            env:
-              MONGO_INITDB_ROOT_USERNAME: mongoadmin
-              MONGO_INITDB_ROOT_PASSWORD: mongopasswd
+            options: 
+              --name mongo
         env:
-          MONGO_URI: 'mongodb://mongoadmin:mongopasswd@localhost:27017/superData'
+          MONGO_URI: 'mongodb://mongoadmin:mongopasswd@mongo:27017/superData'
           MONGO_USERNAME: mongoadmin
           MONGO_PASSWORD: mongopasswd
         steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
 
-        - name: Setup NodeJS Version
-          uses: actions/setup-node@v4
-          with:
-            node-version: 20
+        # - name: Setup NodeJS Version
+        #   uses: actions/setup-node@v4
+        #   with:
+        #     node-version: 20
     
         - name: Install Dependencies
           run: npm install
