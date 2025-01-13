@@ -61,7 +61,7 @@ jobs:
       steps:
 
         - name: Get previous job output
-          run: echo "${{env.RUN}}"
+          run: echo "${{env.URL}}"
 
         - name: Checkout
           uses: actions/checkout@v4
