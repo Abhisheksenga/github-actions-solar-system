@@ -19,8 +19,13 @@ jobs:
             image: mongo
             ports:
               - 27017:27017
+            env:
+              MONGO_INITDB_ROOT_USERNAME: mongoadmin
+              MONGO_INITDB_ROOT_PASSWORD: mongopasswd
         env:
           MONGO_URI: mongodb://localhost:27017/superData
+          MONGO_USERNAME: mongoadmin
+          MONGO_PASSWORD: mongopasswd
         steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
