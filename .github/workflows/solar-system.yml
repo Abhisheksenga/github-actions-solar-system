@@ -54,36 +54,47 @@ jobs:
           id: job-output
           run: echo "URL=localhost" >> "$GITHUB_OUTPUT"
 
-    docker:
-      name: Containarization
-      runs-on: ubuntu-latest
-      needs: unit-testing
-      steps:
-
-        - name: Get previous job output
-          run: echo "${{needs.unit-testing.outputs.URL}}"
-
-        - name: Checkout
-          uses: actions/checkout@v4
-
-        - name: Docker build
-          uses: docker/build-push-action@v4
+        - name: Create Release
+          id: create_release
+          uses: actions/create-release@v1
+          env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
-            context: .
-            push: false
-            tags: ${{ github.repository_owner }}/solar-system:${{ github.sha }}
+               tag_name: dev-latest
+               release_name: Release dev-latest
+               draft: false
+               prerelease: true
+
+    # docker:
+    #   name: Containarization
+    #   runs-on: ubuntu-latest
+    #   needs: unit-testing
+    #   steps:
+
+    #     - name: Get previous job output
+    #       run: echo "${{needs.unit-testing.outputs.URL}}"
+
+    #     - name: Checkout
+    #       uses: actions/checkout@v4
+
+    #     - name: Docker build
+    #       uses: docker/build-push-action@v4
+    #       with:
+    #         context: .
+    #         push: false
+    #         tags: ${{ github.repository_owner }}/solar-system:${{ github.sha }}
         
-        - name: GHCR login
-          uses: docker/login-action@v2.2.0
-          with:
-            registry: ghcr.io
-            username: ${{github.repository_owner}}
-            password: ${{secrets.GITHUB_TOKEN}}
+    #     - name: GHCR login
+    #       uses: docker/login-action@v2.2.0
+    #       with:
+    #         registry: ghcr.io
+    #         username: ${{github.repository_owner}}
+    #         password: ${{secrets.GITHUB_TOKEN}}
         
-        - name: Container push
-          uses: docker/build-push-action@v4
-          with:
-            context: .
-            push: true
-            tags: ghcr.io/abhisheksenga/solar-system:${{ github.sha }}
+    #     - name: Container push
+    #       uses: docker/build-push-action@v4
+    #       with:
+    #         context: .
+    #         push: true
+    #         tags: ghcr.io/abhisheksenga/solar-system:${{ github.sha }}
 
