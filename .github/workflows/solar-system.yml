@@ -54,11 +54,6 @@ jobs:
           id: job-output
           run: echo "URL=localhost" >> "$GITHUB_OUTPUT"
 
-        - name: Archive Project content
-          uses: thedoctor0/zip-release@master
-          with:
-               filename: site.zip
-
         - name: Create Release
           id: create_release
           uses: actions/create-release@v1
@@ -73,11 +68,10 @@ jobs:
         - name: Create Versioned GitHub Release
           uses: softprops/action-gh-release@v1
           with:
-              tag_name: v-${{ github.run_number }}
+              tag_name: ${{ github.ref }}
               name: Release1 ${{ github.run_number }}
               draft: false
               prerelease: true
-              files: site.zip
           env:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
            
